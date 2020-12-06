@@ -7,7 +7,12 @@ module AdventOfCode2020
   def self.load(puzzle)
     puts "Loading: #{puzzle}"
     require "advent_of_code_2020/puzzles/#{puzzle}.rb"
-    klass = Kernel.const_get(puzzle.to_s.split('_').collect(&:capitalize).join)
-    klass.new.call
+    klass_or_module = Kernel.const_get(puzzle.to_s.split('_').collect(&:capitalize).join)
+    
+    if klass_or_module.instance_of? Module
+      return klass_or_module.call
+    else
+      klass_or_module.new.call
+    end
   end
 end
